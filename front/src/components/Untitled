@@ -1,8 +1,0 @@
-implementirane osnovne komponente za kurseve
-
-- Dodata AllCourses komponenta za prikaz svih kurseva
-- Dodata Course komponenta za prikaz pojedinačnog kursa
-- Dodata CourseForm komponenta za kreiranje/editovanje kurseva
-- Dodata Courses komponenta kao glavni kontejner
-- Dodata MyCourses komponenta za kurseve korisnika
-- Postavljena inicijalna struktura components foldera
