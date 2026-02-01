@@ -3,6 +3,7 @@ const dotenv = require("dotenv")
 const app = express();
 const userRoutes = require("./routes/userRoute");
 const coursesRoutes = require("./routes/coursesRoutes")
+const questionRoutes = require("./routes/questionRoutes")
 const mongoose = require("mongoose");
 const cors = require("cors")
 
@@ -19,14 +20,6 @@ app.use(
 
 app.use(express.json());
 
-app.all('*', function(req, res, next) {
-  if ('OPTIONS' === req.method) {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-});
-
 
 app.get('/', (req, res) => {
     res.send('Api is running...')
@@ -36,6 +29,7 @@ app.get('/', (req, res) => {
 //routes
 app.use("/api/users", userRoutes)
 app.use("/api/courses", coursesRoutes)
+app.use("/api/questions", questionRoutes)
 
 
 mongoose.connect(process.env.DB_URI)
