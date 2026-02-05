@@ -10,7 +10,7 @@ import useAuthContext from "@/hooks/useAuthContext";
 import { IoClose } from "react-icons/io5";
 import { useState } from "react";
 import { motion } from "framer-motion"
-import useApply from "../hooks/useApply"
+import useQuestion from "../hooks/useQuestion"
 import Lottie from "lottie-react";
 import loadingAnimation from "../assets/loadingAnimation.json"
  
@@ -23,14 +23,14 @@ export default function ContactForm(){
     if (user) {
         initialValues = { email: user.email, name: user.name, message:""};
       }
-      const {apply, success, error, isLoading} = useApply()
+      const {sendQuestion, success, error, isLoading} = useQuestion()
     return(
         <>
           <Formik
                 validationSchema={contactSchema}
                 initialValues={initialValues}
-                onSubmit={ async ({name,email,message},{resetForm}) => { 
-                        
+                onSubmit={ async ({name,email,message},{resetForm}) => {
+                        await sendQuestion({name, email, message});
                         resetForm();
                 }}
             >
