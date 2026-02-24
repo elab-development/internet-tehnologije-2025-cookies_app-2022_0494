@@ -57,7 +57,7 @@ export default function Nav(){
                 )}
                 
             </ul>
-            <div className="text-[40px] xl:hidden z-50 cursor-pointer" onClick={()=>setIsMobile(!isMobile)}><HiMenu style={"font-size:2.1rem"}/></div>
+            <div className="text-[40px] xl:hidden z-50 cursor-pointer" onClick={()=>setIsMobile(!isMobile)}><HiMenu style={{fontSize: "2.1rem"}}/></div>
             
         </div>
         

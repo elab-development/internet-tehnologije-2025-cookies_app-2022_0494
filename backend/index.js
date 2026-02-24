@@ -7,15 +7,17 @@ const questionRoutes = require("./routes/questionRoutes")
 const roleRoutes = require("./routes/roleRoutes")
 const mongoose = require("mongoose");
 const cors = require("cors")
+const swaggerUi = require("swagger-ui-express")
+const swaggerSpec = require("./swagger")
 
 dotenv.config();
 
 // middleware
 app.use(
   cors({
-      origin: "*", // Allow your frontend origin
-      methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Allowed methods
-      credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+      origin: "*", 
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE", 
+      credentials: true, 
   })
 );
 
@@ -26,6 +28,8 @@ app.get('/', (req, res) => {
     res.send('Api is running...')
 })
 
+// swagger
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 //routes
 app.use("/api/users", userRoutes)

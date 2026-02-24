@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs")
 const mongoose = require("mongoose")
 
 const generateToken = (_id) => {
-    return jwt.sign({_id}, process.env.SECRET, {expiresIn:"30d"})
+    return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "30d" })
 }
 
 // get post delete update/patch
@@ -12,7 +12,7 @@ const generateToken = (_id) => {
 // @desc    Get All Users from DB
 // @route   /users
 // @access  Private
-const getUsers = async (req,res) => {
+const getUsers = async (req, res) => {
     try {
         const users = await User.find({})
         res.json(users)
@@ -20,14 +20,14 @@ const getUsers = async (req,res) => {
         res.json({
             message: error.message
         })
-    }  
+    }
 }
 
 // @desc    Creates a user
 // @route   /register
 // @access  Public
 const registerUser = async (req, res) => {
-    const { name,age,phone, email, password } = req.body;
+    const { name, age, phone, email, password } = req.body;
     try {
         // Check if user already exists
         const exists = await User.findOne({ email });
@@ -38,7 +38,7 @@ const registerUser = async (req, res) => {
         const hash = await bcrypt.hash(password, salt)
 
         // Create new user
-        const user = await User.create({ name, email, password:hash, age, phone });
+        const user = await User.create({ name, email, password: hash, age, phone });
         if (!user) {
             res.status(500).json({ message: "Greška pri kreiranju korisnika" });
         }
@@ -51,10 +51,10 @@ const registerUser = async (req, res) => {
             token: token,
             age: user.age,
             phone: user.phone,
-            applications:user.applications,
+            applications: user.applications,
             courses: user.courses,
             createdAt: user.createdAt,
-            updatedAt:user.updatedAt,   
+            updatedAt: user.updatedAt,
         });
     } catch (error) {
         // Handle errors
@@ -67,12 +67,12 @@ const registerUser = async (req, res) => {
 // @access  Public
 const loginUser = async (req, res) => {
     try {
-        const {email, password} = req.body;
-        const user = await User.findOne({email})
-        if(!user){
-            res.status(404).json({message:"Uneti email nije registrovan"})
+        const { email, password } = req.body;
+        const user = await User.findOne({ email })
+        if (!user) {
+            res.status(404).json({ message: "Uneti email nije registrovan" })
         }
-        if(user && (await bcrypt.compare(password,user.password))){
+        if (user && (await bcrypt.compare(password, user.password))) {
             res.status(200).json({
                 _id: user._id,
                 email: user.email,
@@ -82,11 +82,11 @@ const loginUser = async (req, res) => {
                 phone: user.phone,
                 courses: user.courses,
                 createdAt: user.createdAt,
-                updatedAt:user.updatedAt,   
+                updatedAt: user.updatedAt,
             })
-        } else res.status(400).json({message:"Pogrešan email ili lozinka"})
+        } else res.status(400).json({ message: "Pogrešan email ili lozinka" })
     } catch (error) {
-        res.status(500).json({message:error})
+        res.status(500).json({ message: error })
     }
 }
 
@@ -95,32 +95,32 @@ const loginUser = async (req, res) => {
 // @access  Private
 const removeUser = async (req, res) => {
     try {
-          // Trazimo u bazi korisnika sa tim ID-jem
-    const id = req.params.id;
+        // Trazimo u bazi korisnika sa tim ID-jem
+        const id = req.params.id;
 
-    if (!mongoose.isValidObjectId(id)) {
-        return res.status(400).json({
-            message: 'Invalid user ID format.',
-        });
-    }
+        if (!mongoose.isValidObjectId(id)) {
+            return res.status(400).json({
+                message: 'Invalid user ID format.',
+            });
+        }
 
-    const user = await User.findById(id);
-    //   Ako ne postoji, vracamo 404 Not Found
-    if (!user) {
-        res.status(404);
-        res.json({
-            message: 'User with the given ID was not found.',
-        });
-        return;
-  }
-    //   Ako postoji, brisemo i vracamo taj objekat koji smo obrisali
-         await User.deleteOne({ _id: id });
+        const user = await User.findById(id);
+        //   Ako ne postoji, vracamo 404 Not Found
+        if (!user) {
+            res.status(404);
+            res.json({
+                message: 'User with the given ID was not found.',
+            });
+            return;
+        }
+        //   Ako postoji, brisemo i vracamo taj objekat koji smo obrisali
+        await User.deleteOne({ _id: id });
         res.json(user);
     } catch (error) {
-        res.json({error:error.message})
+        res.json({ error: error.message })
     }
 
 };
 
 
-module.exports={getUsers,registerUser,loginUser,removeUser}
+module.exports = { getUsers, registerUser, loginUser, removeUser }
