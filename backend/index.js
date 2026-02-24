@@ -7,6 +7,8 @@ const questionRoutes = require("./routes/questionRoutes")
 const roleRoutes = require("./routes/roleRoutes")
 const mongoose = require("mongoose");
 const cors = require("cors")
+const swaggerUi = require("swagger-ui-express")
+const swaggerSpec = require("./swagger")
 
 dotenv.config();
 
@@ -26,6 +28,8 @@ app.get('/', (req, res) => {
     res.send('Api is running...')
 })
 
+// swagger
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 //routes
 app.use("/api/users", userRoutes)
