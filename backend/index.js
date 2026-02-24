@@ -13,9 +13,9 @@ dotenv.config();
 // middleware
 app.use(
   cors({
-      origin: "*", // Allow your frontend origin
-      methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Allowed methods
-      credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+      origin: "*", 
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE", 
+      credentials: true, 
   })
 );
 
