@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import coursesList from "../app/courses";
+import DictionaryWidget from "./DictionaryWidget";
 
 interface Course {
   id: string;
@@ -25,6 +26,14 @@ export default function AllCourses() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+  const [eurRate, setEurRate] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    fetch("https://latest.currency-api.pages.dev/v1/currencies/eur.json")
+      .then((res) => res.json())
+      .then((data) => setEurRate(data.eur.rsd))
+      .catch(() => {});
+  }, []);
 
   const handleFilterClick = (filter: string) => {
     // Toggle the filter: if it's the current active filter, unselect it; otherwise, select it
@@ -155,12 +164,14 @@ export default function AllCourses() {
                 price={course.price}
                 image={course.image}
                 link={course.link}
+                eurRate={eurRate}
               />
             </motion.div>
           ))}
           <CourseForm />
         </div>
       </div>
+      <DictionaryWidget />
     </>
   );
 }
